@@ -14,7 +14,6 @@ target 'assignment3' do
 
 
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'assignment3Tests' do
     inherit! :complete
