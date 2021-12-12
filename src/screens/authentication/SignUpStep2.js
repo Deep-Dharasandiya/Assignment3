@@ -1,21 +1,18 @@
 import React from 'react'
 import { StyleSheet, Text, View,TouchableOpacity,ScrollView} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SplashScreen from 'react-native-splash-screen';
-import TextField from '../../components/InputFeild/TextFeild';
-import PasswordField from '../../components/InputFeild/PasswordFeild';
 import Colors from '../../constant/Colors';
 import ScreenDetails from '../../constant/ScreenDetails';
 import CornerDesign from '../../components/CornerDesign';
 import Logo from '../../components/Logo';
 import SubmitButton from '../../components/Button/SubmitButton';
 import AuthenticationTitle from '../../components/Title/AuthenticationTitle';
+import OTPTextInput from '../../components/InputFeild/OTPTextInput';
 import Loader from '../../components/Loader';
 import Aleart from '../../components/Aleart';
-import { isEmail,isValidPassword } from '../../constant/Validation';
-import { getValue } from '../../services/AsyncStorage';
+import { isValidPin } from '../../constant/Validation';
 
-export default function SignIn(props) {
+export default function SignUpStep2(props) {
     const screenDetails=ScreenDetails();
     const styles = StyleSheet.create({
         container:{
@@ -32,34 +29,36 @@ export default function SignIn(props) {
             alignItems:'center',
             justifyContent:'center'
         },
-        forgotPassword:{
+        otpIntruction:{
+            fontSize:18 * screenDetails.unit,
+            color:Colors.black,
+            textAlign:'left',
+            marginTop:20,
+            marginBottom:10
+        },
+        otpReSend:{
             marginTop:10 * screenDetails.unit,
             alignSelf:'flex-end',
         },
-        forgotPasswordText:{
+        otpReSendText:{
             fontSize:18 * screenDetails.unit,
             color:Colors.lightblue,
             fontWeight:'500',
         },
-        signUpLink:{
+        signInLink:{
             marginTop:screenDetails.isPotraite? 20 * screenDetails.unit:0,
             alignItems:'center',
         },
-        signUpLinkText:{
+        signInLinkText:{
             fontSize:20 * screenDetails.unit,
             color:Colors.lightblue,
             fontWeight:'500',
         }
     })
 
-   const [email , setEmail] = React.useState('');
-   const [password , setPassword] = React.useState('');
-   
-    React.useEffect(() => {
-        SplashScreen.hide();
-    }, []);
+   const [otp , setOTP] = React.useState('');
 
-    const [isLoading , setIsLoading] = React.useState(false);
+   const [isLoading , setIsLoading] = React.useState(false);
     const [aleartMessage, setAleartMessage] = React.useState('');
     function onHandleLoader(flag){
         setIsLoading(flag);
@@ -67,45 +66,33 @@ export default function SignIn(props) {
     function onAleartMessage(msg){
         setAleartMessage(msg);
     }
+    function onChangeOTP(otp){
+        setOTP(otp);
+    }
+    function onOTPReSenr(){
 
-    function onChangeEmail(text){
-        setEmail(text);
     }
-    function onChangePassword(text){
-        setPassword(text);
-    }
-    function onForgotPassword(){
-        props.navigation.navigate('ForGotPassword1');
-    }
-   
-     async function onSignIn(){
-       if(email !='' && password != ''){
-           if(isEmail(email)){
-              if(isValidPassword(password)){
-                onHandleLoader(true);
-                //console.log( await getValue('isSignUp'));
-                //if(await getValue('isSignUp')=='true'){
-                //    console.log(getValue('details'));
-               // }
-                setTimeout(() => {
-                    onHandleLoader(false);
-                    onAleartMessage("Successfuly SignIn")
-                  }, 3000);
-                 
-              }else{
-                onAleartMessage("Invalid Password")
-              }
+    function onNext(){
+       if(otp !='' ){
+           if(isValidPin(otp)){
+            onHandleLoader(true);
+            setTimeout(() => {
+                onHandleLoader(false);
+                props.navigation.navigate('SignUpStep3',{email:props.route.params.email});
+              }, 3000);
+            
            }else{
-            onAleartMessage("Invalid Email")
+            onAleartMessage("Invalid OTP")
            }
+
        }else{
-        onAleartMessage("Please Enter All Details")
+        onAleartMessage("Please Enter OTP")
        }
     }
-    function onSignUp(){
-        props.navigation.navigate('SignUpStep1');
+    function onSignIn(){
+        props.navigation.popToTop();
     }
- 
+   
    
 
     return (
@@ -116,7 +103,7 @@ export default function SignIn(props) {
             <CornerDesign
                cornerPosition="bottom"
             />
-            <Loader
+             <Loader
             isVisible ={isLoading}
             fn={onHandleLoader}
             />
@@ -145,50 +132,38 @@ export default function SignIn(props) {
                 position="Horizontal"
                 height={90 * screenDetails.unit}
                 />)}
-                
 
                  <AuthenticationTitle
-                    title="Please SignIn"
+                    title="SignUp 2/3"
                  />
-
-                <TextField
-                    lable="Email:"
-                    keypadtipe="email-address"
-                    ismultipleline={false}
-                    iconname="person"
-                    value={email}
-                    fn={onChangeEmail}
-                />
-
-                <PasswordField
-                    lable="Password:"
-                    ismultipleline={false}
-                    iconname="key"
-                    value={password}
-                    fn={onChangePassword}
+                 
+                 <Text style={styles.otpIntruction}>Please enter OTP which is sent on {props.route.params.email}</Text>
+               
+                <OTPTextInput
+                    fn={onChangeOTP}
                 />
 
                 <TouchableOpacity
-                    style={styles.forgotPassword}
-                    onPress={onForgotPassword}>
+                    style={styles.otpReSend}
+                    onPress={onOTPReSenr}>
 
-                        <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                        <Text style={styles.otpReSendText}>Re Send</Text>
 
                 </TouchableOpacity>
-
+              
                 <SubmitButton
                         height={50}
                         width={screenDetails.isPotraite? screenDetails.width*0.9:screenDetails.width*0.5}
-                        lable="Submit"
+                        lable="Next"
                         iconname="md-checkmark-circle-sharp"
-                        fn={onSignIn}
+                        fn={onNext}
                 />
 
                 <TouchableOpacity
-                    style={styles.signUpLink}
-                    onPress={onSignUp}>
+                    style={styles.signInLink}
+                    onPress={onSignIn}>
 
-                        <Text style={styles.signUpLinkText}>I haven't account?</Text>
+                        <Text style={styles.signInLinkText}>I have account?</Text>
 
                 </TouchableOpacity>
 

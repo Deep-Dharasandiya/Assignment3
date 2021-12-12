@@ -1,8 +1,7 @@
 import React from 'react'
 import { Dimensions ,Platform} from "react-native"
 
-
-export default ScreenDetails = () => {
+export default function ScreenDetails  (){
 
         const [screenInfo,setScreenInfo] = React.useState(Dimensions.get('screen'));
 
@@ -17,23 +16,21 @@ export default ScreenDetails = () => {
             return () =>event.remove();
 
         }, []);
-        const baseWidth = 360;
-        const baseHeight = 700;
-        const scaleWidth = screenInfo.width / baseWidth;
-        const scaleHeight = screenInfo.height / baseHeight;
-        const scale = Math.min(scaleWidth, scaleHeight);
+        let unit=screenInfo.width*0.00138+ screenInfo.height *0.0006830;
+        let landscapeUnit=unit;
+        if(screenInfo.height<screenInfo.width){
+            unit = unit * 0.65;
+        }
         
-        
-        const Details={
+         const Details={
             platform:Platform.OS,
             isPotraite:screenInfo.height>screenInfo.width,
             height:screenInfo.height,
             width:screenInfo.width,
-            scale:scale,
-            unit:screenInfo.width*0.00138+ screenInfo.height *0.0006830
+            unit:unit,
+            landscapeUnit:landscapeUnit,
             
         }
-
         return Details;  
 
 }
