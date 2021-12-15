@@ -20,7 +20,7 @@ export default function OTPTextInput(props) {
             borderRadius:5,
             textAlign:'center',
             fontSize:25* screenDetails.unit,
-            paddingVertical:5* screenDetails.unit,
+            paddingVertical:screenDetails.platform=='ios'? 10* screenDetails.unit:5* screenDetails.unit,
             paddingHorizontal:8* screenDetails.unit,
         }
     })

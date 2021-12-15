@@ -29,6 +29,7 @@ export default  function TextField(props) {
         textinput:{
             flex: 1,
             color:Colors.black,
+            paddingVertical:10 * screenDetails.unit,
         }
     });
     return (

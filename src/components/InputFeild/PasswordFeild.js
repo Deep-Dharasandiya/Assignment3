@@ -28,7 +28,8 @@ export default  function PasswordField(props) {
         textinput:{
             flex: 1,
             color:Colors.black,
-            marginRight:30 * screenDetails.unit
+            marginRight:30 * screenDetails.unit,
+            paddingVertical: 10 * screenDetails.unit,
         },
         PasswordVisibilityBtn: {
           position: 'absolute',

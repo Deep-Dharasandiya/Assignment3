@@ -27,6 +27,7 @@ export default function Loader(props) {
     return (
         <Modal
           transparent={true}
+          supportedOrientations={['portrait', 'landscape']}
           animationType='none'
           visible={props.isVisible}
           onRequestClose={() => {

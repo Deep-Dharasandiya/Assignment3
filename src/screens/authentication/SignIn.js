@@ -79,6 +79,7 @@ export default function SignIn(props) {
     }
    
      async function onSignIn(){
+        
        if(email !='' && password != ''){
            if(isEmail(email)){
               if(isValidPassword(password)){
@@ -90,6 +91,9 @@ export default function SignIn(props) {
                 setTimeout(() => {
                     onHandleLoader(false);
                     onAleartMessage("Successfuly SignIn")
+                    setTimeout(() => {
+                        props.navigation.navigate('BottomTabNavigation');
+                      }, 1000);
                   }, 3000);
                  
               }else{
