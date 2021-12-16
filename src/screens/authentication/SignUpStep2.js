@@ -21,7 +21,7 @@ export default function SignUpStep2(props) {
             alignItems:'center',
             justifyContent:'center',
             backgroundColor:Colors.white,
-            padding: screenDetails.isPotraite?screenDetails.width * 0.05:screenDetails.height * 0.05,
+            padding: screenDetails.isPotraite?screenDetails.width * 0.05:screenDetails.height * 0.035,
         },
         scrollView:{
             flexGrow:1,

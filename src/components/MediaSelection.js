@@ -54,6 +54,7 @@ export default function MediaSelection(props) {
         <View>
           <Modal
             transparent={true}
+            supportedOrientations={['portrait', 'landscape']}
             animationType='none'
             visible={props.isVisible}
             nRequestClose={()=>props.fn2(false)}>
